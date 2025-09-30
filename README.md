@@ -24,12 +24,18 @@ A streamable http-based MCP server providing tools for logging expenses.
     git clone https://github.com/evanxd/expense-log-mcp-py.git
     ```
 
-2.  **Install dependencies:**
+2.  **Create and activate a virtual environment:**
+    ```bash
+    uv venv
+    source .venv/bin/activate
+    ```
+
+3.  **Install dependencies:**
     ```bash
     uv pip install -e .
     ```
 
-3.  **Set up the database:**
+4.  **Set up the database:**
     - Create a `.env` file in the root of the project.
     - Add your PostgreSQL connection string to the `.env` file:
       ```
@@ -50,13 +56,13 @@ A streamable http-based MCP server providing tools for logging expenses.
       prisma db push
       ```
 
-4.  **Start the server:**
+5.  **Start the server:**
     ```bash
     uv run python -m expense_log_mcp.main
     ```
     This command starts the server, which will listen for incoming requests on the specified `PORT` (defaulting to 8000).
 
-5.  **Configure your MCP host (e.g., Gemini CLI):**
+6.  **Configure your MCP host (e.g., Gemini CLI):**
     - Add the following configuration to your Gemini CLI settings (typically found in `~/.gemini-cli/config.json` or similar, depending on your OS):
     ```json
     "mcpServers": {
