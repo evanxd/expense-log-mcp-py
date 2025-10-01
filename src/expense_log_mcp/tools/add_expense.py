@@ -1,6 +1,6 @@
 import json
-from ..database import get_db
-from ..models import Expense
+from expense_log_mcp.database import get_db
+from expense_log_mcp.models import Expense
 from typing import Callable
 from cuid2 import cuid_wrapper
 

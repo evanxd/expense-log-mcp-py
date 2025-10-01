@@ -1,6 +1,6 @@
 import json
-from ..database import get_db
-from ..models import ExpenseCategory
+from expense_log_mcp.database import get_db
+from expense_log_mcp.models import ExpenseCategory
 
 def get_expense_categories() -> str:
     """

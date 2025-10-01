@@ -2,8 +2,8 @@ import json
 from datetime import datetime
 from collections import defaultdict
 from typing import List, Optional
-from ..database import get_db
-from ..models import Expense, ExpenseCategory
+from expense_log_mcp.database import get_db
+from expense_log_mcp.models import Expense
 
 def get_grouped_expenses(
     ledger_id: str,
