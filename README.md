@@ -36,20 +36,15 @@ A streamable http-based MCP server providing tools for logging expenses.
     ```
 
 4.  **Set up the database:**
-    - Create a `.env` file in the root of the project.
-    - Add your PostgreSQL connection string to the `.env` file:
-      ```
-      DB_USER="postgres"
-      DB_HOST="localhost"
-      DB_PORT="5432"
-      DB_DATABASE="postgres"
-      DB_PASSWORD="YOUR_DB_PASSWORD"
-      DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?schema=public"
+    - Create a `.env` file by copying `.env.example` and updating the values:
+      ```bash
+      cp .env.example .env
       ```
     - **Add server configuration to your `.env` file:**
       ```
-      MCP_SECRET_KEY="YOUR_SECRET_KEY" # A strong, unique key for authenticating with the MCP server
-      PORT="8000" # The port the MCP server will listen on (default is 8000)
+      DATABASE_URL="postgresql://postgres:password@localhost:5432/postgres?schema=public"
+      BEARER_TOKEN="YOUR_BEARER_TOKEN"
+      PORT="8000"
       ```
     - Apply the database schema:
       ```bash
@@ -69,12 +64,12 @@ A streamable http-based MCP server providing tools for logging expenses.
       "expense-log-mcp": {
         "url": "http://localhost:8000/mcp",
         "headers": {
-          "Authorization": "Bearer YOUR_SECRET_KEY"
+          "Authorization": "Bearer YOUR_BEARER_TOKEN"
         }
       }
     }
     ```
-    **Important:** Replace `YOUR_SECRET_KEY` with the actual `MCP_SECRET_KEY` you set in your `.env` file. This tells the Gemini CLI how to connect to and authenticate with your locally running Expense Log MCP server.
+    **Important:** Replace `YOUR_BEARER_TOKEN` with the actual `BEARER_TOKEN` you set in your `.env` file. This tells the Gemini CLI how to connect to and authenticate with your locally running Expense Log MCP server.
 
 ## 🛠️ Tools
 

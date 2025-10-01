@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from fastmcp import FastMCP
+from auth import BearerTokenVerifier
 from tools import (
     add_expense,
     delete_expense,
@@ -11,7 +12,11 @@ from tools import (
 
 load_dotenv()
 
-mcp = FastMCP("Expense Log MCP")
+auth = BearerTokenVerifier(
+    client_id="expense-log-agent",
+    token=os.getenv("BEARER_TOKEN"),
+)
+mcp = FastMCP(name="Expense Log MCP", auth=auth)
 
 mcp.tool(add_expense)
 mcp.tool(delete_expense)
