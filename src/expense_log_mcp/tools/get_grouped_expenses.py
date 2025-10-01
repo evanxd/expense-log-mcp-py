@@ -1,10 +1,11 @@
 import json
-from prisma import Prisma
 from datetime import datetime
 from collections import defaultdict
 from typing import List, Optional
+from ..database import get_db
+from ..models import Expense, ExpenseCategory
 
-async def get_grouped_expenses(
+def get_grouped_expenses(
     ledger_id: str,
     category_ids: Optional[List[str]] = None,
     payer: Optional[str] = None,
@@ -16,27 +17,20 @@ async def get_grouped_expenses(
     with optional filters for category IDs, payer, and a date range.
     """
     try:
-        db = Prisma()
-        await db.connect()
+        db = next(get_db())
 
-        where_clause = {"ledgerId": ledger_id}
+        query = db.query(Expense).filter(Expense.ledgerId == ledger_id)
+
         if category_ids:
-            where_clause["categoryId"] = {"in": category_ids}
+            query = query.filter(Expense.categoryId.in_(category_ids))
         if payer:
-            where_clause["payer"] = payer
+            query = query.filter(Expense.payer == payer)
         if start_date:
-            where_clause["createdAt"] = {"gte": datetime.fromisoformat(start_date)}
+            query = query.filter(Expense.createdAt >= datetime.fromisoformat(start_date))
         if end_date:
-            if "createdAt" not in where_clause:
-                where_clause["createdAt"] = {}
-            where_clause["createdAt"]["lte"] = datetime.fromisoformat(end_date)
+            query = query.filter(Expense.createdAt <= datetime.fromisoformat(end_date))
 
-        expenses = await db.expense.find_many(
-            where=where_clause,
-            include={"category": True}
-        )
-
-        await db.disconnect()
+        expenses = query.all()
 
         grouped_expenses = defaultdict(lambda: {"expenseCategories": defaultdict(float), "totalAmount": 0.0})
 

@@ -1,22 +1,15 @@
 import json
-from prisma import Prisma
+from ..database import get_db
+from ..models import Expense
 
-async def delete_expense(ledger_id: str, message_id: str) -> str:
+def delete_expense(ledger_id: str, message_id: str) -> str:
     """
     Deletes an expense record.
     """
     try:
-        db = Prisma()
-        await db.connect()
+        db = next(get_db())
 
-        expense = await db.expense.find_unique(
-            where={
-                "ledgerId_messageId": {
-                    "ledgerId": ledger_id,
-                    "messageId": message_id,
-                }
-            }
-        )
+        expense = db.query(Expense).filter_by(ledgerId=ledger_id, messageId=message_id).first()
 
         if not expense:
             return json.dumps({
@@ -25,16 +18,8 @@ async def delete_expense(ledger_id: str, message_id: str) -> str:
                 "message": "Expense not found.",
             })
 
-        await db.expense.delete(
-            where={
-                "ledgerId_messageId": {
-                    "ledgerId": ledger_id,
-                    "messageId": message_id,
-                }
-            }
-        )
-
-        await db.disconnect()
+        db.delete(expense)
+        db.commit()
 
         return json.dumps({
             "success": True,

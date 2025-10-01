@@ -1,17 +1,15 @@
 import json
-from prisma import Prisma
+from ..database import get_db
+from ..models import ExpenseCategory
 
-async def get_expense_categories() -> str:
+def get_expense_categories() -> str:
     """
     Retrieves the list of all expense categories.
     """
     try:
-        db = Prisma()
-        await db.connect()
+        db = next(get_db())
 
-        categories = await db.expensecategory.find_many()
-
-        await db.disconnect()
+        categories = db.query(ExpenseCategory).all()
 
         return json.dumps({
             "success": True,

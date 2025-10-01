@@ -1,6 +1,3 @@
-import subprocess
-# Workaround: Run prisma generate since FastMCP Cloud doesn't support setup commands.
-subprocess.run(["python", "-m", "prisma", "generate"], check=True)
 import os
 from dotenv import load_dotenv
 from fastmcp import FastMCP
