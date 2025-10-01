@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "expense-log-mcp"
 version = "0.1.0"
@@ -10,5 +14,5 @@ dependencies = [
     "python-dotenv>=1.1.1",
 ]
 
-[tool.poetry.include]
-"src/expense_log_mcp/**" = "expense_log_mcp"
+[tool.setuptools.packages.find]
+where = ["src"]
