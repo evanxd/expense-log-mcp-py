@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 from fastmcp import FastMCP
-from auth import BearerTokenVerifier
-from tools import (
+from expense_log_mcp.auth import BearerTokenVerifier
+from expense_log_mcp.tools import (
     add_expense,
     delete_expense,
     get_expense,
