@@ -9,3 +9,6 @@ dependencies = [
     "prisma>=0.15.0",
     "python-dotenv>=1.1.1",
 ]
+
+[tool.poetry.include]
+"src/expense_log_mcp/**" = "expense_log_mcp"

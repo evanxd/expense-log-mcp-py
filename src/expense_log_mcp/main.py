@@ -1,6 +1,10 @@
+import sys
 import os
 from dotenv import load_dotenv
 from fastmcp import FastMCP
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 from expense_log_mcp.auth import BearerTokenVerifier
 from expense_log_mcp.tools import (
     add_expense,
