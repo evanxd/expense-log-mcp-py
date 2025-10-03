@@ -6,7 +6,15 @@ from cuid2 import cuid_wrapper
 
 cuid_generator: Callable[[], str] = cuid_wrapper()
 
-def add_expense(ledger_id: str, category_id: str, message_id: str, description: str, amount: float, payer: str) -> str:
+
+def add_expense(
+    ledger_id: str,
+    category_id: str,
+    message_id: str,
+    description: str,
+    amount: float,
+    payer: str,
+) -> str:
     """
     Adds a new expense record.
     """
@@ -27,17 +35,19 @@ def add_expense(ledger_id: str, category_id: str, message_id: str, description: 
         db.commit()
         db.refresh(expense)
 
-        return json.dumps({
-            "success": True,
-            "code": "OK",
-            "message": "Expense added successfully.",
-            "data": {
-                "expenseId": expense.id
+        return json.dumps(
+            {
+                "success": True,
+                "code": "OK",
+                "message": "Expense added successfully.",
+                "data": {"expenseId": expense.id},
             }
-        })
+        )
     except Exception as e:
-        return json.dumps({
-            "success": False,
-            "code": "ERROR",
-            "message": str(e),
-        })
+        return json.dumps(
+            {
+                "success": False,
+                "code": "ERROR",
+                "message": str(e),
+            }
+        )

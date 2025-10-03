@@ -1,6 +1,7 @@
 from fastmcp.server.auth import TokenVerifier
 from fastmcp.server.auth.auth import AccessToken
 
+
 class BearerTokenVerifier(TokenVerifier):
     def __init__(self, client_id: str, token: str, **kwargs):
         super().__init__(**kwargs)

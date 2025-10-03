@@ -2,6 +2,7 @@ import json
 from expense_log_mcp.database import get_db
 from expense_log_mcp.models import Expense
 
+
 def delete_expense(ledger_id: str, message_id: str) -> str:
     """
     Deletes an expense record.
@@ -12,29 +13,35 @@ def delete_expense(ledger_id: str, message_id: str) -> str:
         expense = db.query(Expense).filter_by(ledgerId=ledger_id, messageId=message_id).first()
 
         if not expense:
-            return json.dumps({
-                "success": False,
-                "code": "NOT_FOUND",
-                "message": "Expense not found.",
-            })
+            return json.dumps(
+                {
+                    "success": False,
+                    "code": "NOT_FOUND",
+                    "message": "Expense not found.",
+                }
+            )
 
         db.delete(expense)
         db.commit()
 
-        return json.dumps({
-            "success": True,
-            "code": "OK",
-            "message": "Expense deleted successfully.",
-            "data": {
-                "id": expense.id,
-                "description": expense.description,
-                "amount": expense.amount,
-                "createdAt": expense.createdAt.strftime('%a %b %d %Y')
+        return json.dumps(
+            {
+                "success": True,
+                "code": "OK",
+                "message": "Expense deleted successfully.",
+                "data": {
+                    "id": expense.id,
+                    "description": expense.description,
+                    "amount": expense.amount,
+                    "createdAt": expense.createdAt.strftime("%a %b %d %Y"),
+                },
             }
-        })
+        )
     except Exception as e:
-        return json.dumps({
-            "success": False,
-            "code": "ERROR",
-            "message": str(e),
-        })
+        return json.dumps(
+            {
+                "success": False,
+                "code": "ERROR",
+                "message": str(e),
+            }
+        )

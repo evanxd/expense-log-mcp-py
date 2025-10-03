@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 engine = None
 SessionLocal = None
 
+
 def get_db():
     global engine, SessionLocal
     if not engine:
