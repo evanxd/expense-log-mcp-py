@@ -11,7 +11,6 @@ requires-python = ">=3.11"
 dependencies = [
     "cuid2>=2.0.1",
     "fastmcp>=2.12.4",
-    "prisma>=0.15.0",
     "python-dotenv>=1.1.1",
     "sqlalchemy>=2.0.43",
     "psycopg2-binary>=2.9.9",
