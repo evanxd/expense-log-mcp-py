@@ -47,13 +47,13 @@ def get_grouped_expenses(
 
         expenses = query.order_by(Expense.payer).all()
         grouped_expenses = defaultdict(
-            lambda: {"expenseCategories": defaultdict(float), "totalAmount": 0.0}
+            lambda: {"expense_categories": defaultdict(float), "total_amount": 0.0}
         )
 
         for expense in expenses:
             amount = expense.amount
-            grouped_expenses[expense.payer]["expenseCategories"][expense.category.name] += amount
-            grouped_expenses[expense.payer]["totalAmount"] += amount
+            grouped_expenses[expense.payer]["expense_categories"][expense.category.name] += amount
+            grouped_expenses[expense.payer]["total_amount"] += amount
 
         return json.dumps(
             {

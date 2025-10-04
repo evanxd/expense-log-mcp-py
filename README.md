@@ -35,7 +35,7 @@ A streamable http-based MCP server providing tools for logging expenses.
     uv pip install -e .
     ```
 
-4.  **Set up the database:**
+4.  **Configure environment variables:**
     - Create a `.env` file by copying `.env.example` and updating the values:
       ```bash
       cp .env.example .env
@@ -45,10 +45,6 @@ A streamable http-based MCP server providing tools for logging expenses.
       DATABASE_URL="postgresql://postgres:password@localhost:5432/postgres?schema=public"
       BEARER_TOKEN="YOUR_BEARER_TOKEN"
       PORT="8000"
-      ```
-    - Apply the database schema:
-      ```bash
-      prisma db push
       ```
 
 5.  **Start the server:**
@@ -75,7 +71,7 @@ A streamable http-based MCP server providing tools for logging expenses.
 
 The server exposes the following tools:
 
-### `addExpense`
+### `add_expense`
 
 Adds a new expense record.
 
@@ -83,9 +79,9 @@ Adds a new expense record.
 
 | Name          | Type   | Description                                        |
 |---------------|--------|----------------------------------------------------|
-| `ledgerId`    | string | The ID of the ledger to add the expense to.        |
-| `categoryId`  | string | The ID of the expense category.                    |
-| `messageId`   | string | A unique ID for the message to prevent duplicates. |
+| `ledger_id`    | string | The ID of the ledger to add the expense to.        |
+| `category_id`  | string | The ID of the expense category.                    |
+| `message_id`   | string | A unique ID for the message to prevent duplicates. |
 | `description` | string | A description of the expense.                      |
 | `amount`      | number | The amount of the expense.                         |
 | `payer`       | string | The name of the person who paid.                   |
@@ -99,12 +95,12 @@ A JSON string confirming the expense has been added, e.g.:
   "code": "OK",
   "message": "Expense added successfully.",
   "data": {
-    "expenseId": "clx...456"
+    "expense_id": "clx...456"
   }
 }
 ```
 
-### `deleteExpense`
+### `delete_expense`
 
 Deletes an expense record.
 
@@ -112,8 +108,8 @@ Deletes an expense record.
 
 | Name        | Type   | Description                                         |
 |-------------|--------|-----------------------------------------------------|
-| `ledgerId`  | string | The ID of the ledger the expense belongs to.        |
-| `messageId` | string | The unique message ID of the expense to be deleted. |
+| `ledger_id`  | string | The ID of the ledger the expense belongs to.        |
+| `message_id` | string | The unique message ID of the expense to be deleted. |
 
 **Returns:**
 
@@ -127,12 +123,12 @@ A JSON string confirming the expense has been deleted, and including details of 
     "id": "clx...123",
     "description": "Lunch",
     "amount": 15.75,
-    "createdAt": "Sun Sep 07 2025"
+    "created_at": "Sun Sep 07 2025"
   }
 }
 ```
 
-### `getExpense`
+### `get_expense`
 
 Retrieves the details of a single expense.
 
@@ -140,8 +136,8 @@ Retrieves the details of a single expense.
 
 | Name        | Type   | Description                                         |
 |-------------|--------|-----------------------------------------------------|
-| `ledgerId`  | string | The ID of the ledger the expense belongs to.        |
-| `messageId` | string | The unique message ID of the expense to be deleted. |
+| `ledger_id`  | string | The ID of the ledger the expense belongs to.        |
+| `message_id` | string | The unique message ID of the expense to be deleted. |
 
 **Returns:**
 
@@ -156,13 +152,13 @@ A JSON string confirming the expense has been retrieved, and including details o
     "description": "Lunch",
     "amount": 110,
     "payer": "payer1",
-    "createdAt": "2025-09-07T00:00:00.000Z",
-    "updatedAt": "2025-09-07T00:00:00.000Z"
+    "created_at": "2025-09-07T00:00:00.000Z",
+    "updated_at": "2025-09-07T00:00:00.000Z"
   }
 }
 ```
 
-### `getExpenseCategories`
+### `get_expense_categories`
 
 Retrieves the list of all expense categories.
 
@@ -180,31 +176,35 @@ A JSON string containing the list of expense categories, e.g.:
   "message": "Expense categories retrieved successfully.",
   "data": [
     {
-      "expenseCategoryId": "clx...1",
-      "expenseCategoryName": "Transportation"
+      "expense_category_id": "clx...1",
+      "expense_category_name": "Transportation"
     },
     {
-      "expenseCategoryId": "clx...2",
-      "expenseCategoryName": "Utilities"
+      "expense_category_id": "clx...2",
+      "expense_category_name": "Utilities"
     }
   ]
 }
 ```
 
-### `getGroupedExpenses`
+### `get_grouped_expenses`
 
 Retrieves and groups expenses by payer and then by category name, returning the total amount for each category,
-with optional filters for category IDs, payer, and a date range.
+with optional filters for category IDs, payer name, and a date range.
+The `start_date` and `end_date` should be ISO 8601 strings, always in UTC.
+The timezone for these dates can be adjusted using the `timezone_offset_hours`
+parameter (default: 8), which is an integer representing the UTC offset in hours.
 
 **Parameters:**
 
-| Name          | Type     | Description                                                        |
-|---------------|----------|--------------------------------------------------------------------|
-| `ledgerId`    | string   | The ID of the ledger to retrieve expenses from.                    |
-| `categoryIds` | string[] | Optional. An array of category IDs to filter by.                   |
-| `payer`       | string   | Optional. The name of the payer to filter by.                      |
-| `startDate`   | string   | Optional. The start date for filtering expenses (ISO 8601 format). |
-| `endDate`     | string   | Optional. The end date for filtering expenses (ISO 8601 format).   |
+| Name                  | Type     | Description                                                                                                                              |
+|-----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------|
+| `ledger_id`            | string   | The ID of the ledger to retrieve expenses from.                                                                                          |
+| `category_ids`         | string[] | Optional. An array of category IDs to filter by.                                                                                         |
+| `payer_name`           | string   | Optional. The name of the payer to filter by.                                                                                            |
+| `start_date`           | string   | Optional. The start date for filtering expenses (ISO 8601 format, e.g., "2025-01-01T00:00:00Z").                                          |
+| `end_date`             | string   | Optional. The end date for filtering expenses (ISO 8601 format, e.g., "2025-12-31T23:59:59Z").                                            |
+| `timezone_offset_hours` | number   | Optional. An integer representing the UTC offset in hours to adjust the timezone for `start_date` and `end_date` (default: 8).             |
 
 **Returns:**
 
@@ -216,17 +216,17 @@ A JSON string containing the grouped expenses, e.g.:
   "message": "Grouped expenses retrieved successfully.",
   "data": {
     "Payer1": {
-      "expenseCategories": {
+      "expense_categories": {
         "Entertainment": 100,
         "Transportation": 50
       },
-      "totalAmount": 150
+      "total_amount": 150
     },
     "Payer2": {
-      "expenseCategories": {
+      "expense_categories": {
         "Dining/Snacks": 75
       },
-      "totalAmount": 75
+      "total_amount": 75
     }
   }
 }
@@ -238,9 +238,9 @@ This project uses Prisma to manage the database schema. The schema is defined in
 
 - `Ledger`: Represents a collection of expenses.
 - `ExpenseCategory`: Represents a category for an expense.
-- `Expense`: Represents a single expense record. A unique constraint is added on `ledgerId` and `messageId` to prevent duplicate expenses.
+- `Expense`: Represents a single expense record. A unique constraint is added on `ledger_id` and `message_id` to prevent duplicate expenses.
 
-All models include `createdAt` and `updatedAt` timestamps. IDs are generated using `cuid()`.
+All models include `created_at` and `updated_at` timestamps. IDs are generated using `cuid()`.
 
 ## 🙌 Contributing
 

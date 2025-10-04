@@ -73,11 +73,11 @@ def test_get_grouped_expenses_success(mock_db_session):
     assert result_json["code"] == "OK"
     assert "payer1" in result_json["data"]
     assert "payer2" in result_json["data"]
-    assert result_json["data"]["payer1"]["expenseCategories"]["Category 1"] == 100.0
-    assert result_json["data"]["payer1"]["expenseCategories"]["Category 2"] == 50.0
-    assert result_json["data"]["payer1"]["totalAmount"] == 150.0
-    assert result_json["data"]["payer2"]["expenseCategories"]["Category 2"] == 200.0
-    assert result_json["data"]["payer2"]["totalAmount"] == 200.0
+    assert result_json["data"]["payer1"]["expense_categories"]["Category 1"] == 100.0
+    assert result_json["data"]["payer1"]["expense_categories"]["Category 2"] == 50.0
+    assert result_json["data"]["payer1"]["total_amount"] == 150.0
+    assert result_json["data"]["payer2"]["expense_categories"]["Category 2"] == 200.0
+    assert result_json["data"]["payer2"]["total_amount"] == 200.0
 
 
 def test_get_grouped_expenses_error():
@@ -103,8 +103,8 @@ def test_get_grouped_expenses_error():
             [MOCK_EXPENSES[0]],
             {
                 "payer1": {
-                    "expenseCategories": {"Category 1": 100.0},
-                    "totalAmount": 100.0,
+                    "expense_categories": {"Category 1": 100.0},
+                    "total_amount": 100.0,
                 }
             },
         ),
@@ -113,8 +113,8 @@ def test_get_grouped_expenses_error():
             [MOCK_EXPENSES[0], MOCK_EXPENSES[2]],
             {
                 "payer1": {
-                    "expenseCategories": {"Category 1": 100.0, "Category 2": 50.0},
-                    "totalAmount": 150.0,
+                    "expense_categories": {"Category 1": 100.0, "Category 2": 50.0},
+                    "total_amount": 150.0,
                 }
             },
         ),
@@ -123,12 +123,12 @@ def test_get_grouped_expenses_error():
             [MOCK_EXPENSES[1], MOCK_EXPENSES[2]],
             {
                 "payer1": {
-                    "expenseCategories": {"Category 2": 50.0},
-                    "totalAmount": 50.0,
+                    "expense_categories": {"Category 2": 50.0},
+                    "total_amount": 50.0,
                 },
                 "payer2": {
-                    "expenseCategories": {"Category 2": 200.0},
-                    "totalAmount": 200.0,
+                    "expense_categories": {"Category 2": 200.0},
+                    "total_amount": 200.0,
                 },
             },
         ),
@@ -137,12 +137,12 @@ def test_get_grouped_expenses_error():
             [MOCK_EXPENSES[0], MOCK_EXPENSES[1]],
             {
                 "payer1": {
-                    "expenseCategories": {"Category 1": 100.0},
-                    "totalAmount": 100.0,
+                    "expense_categories": {"Category 1": 100.0},
+                    "total_amount": 100.0,
                 },
                 "payer2": {
-                    "expenseCategories": {"Category 2": 200.0},
-                    "totalAmount": 200.0,
+                    "expense_categories": {"Category 2": 200.0},
+                    "total_amount": 200.0,
                 },
             },
         ),
