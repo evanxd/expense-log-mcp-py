@@ -20,7 +20,7 @@ def get_grouped_expenses(
     with optional filters for category IDs, payer name, and a date range.
     The `start_date` and `end_date` should be ISO 8601 strings, always in UTC.
     The timezone for these dates can be adjusted using the `timezone_offset_hours`
-    parameter (default: 8), which is an integer representing the UTC offset in hours.
+    parameter, which is an integer representing the UTC offset in hours.
     """
     try:
         db = next(get_db())
