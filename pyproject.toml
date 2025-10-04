@@ -14,8 +14,6 @@ dependencies = [
     "python-dotenv>=1.1.1",
     "sqlalchemy>=2.0.43",
     "psycopg2-binary>=2.9.9",
-    "flake8>=7.3.0",
-    "black>=25.9.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -23,3 +21,10 @@ where = ["src"]
 
 [tool.black]
 line-length = 100
+
+[dependency-groups]
+dev = [
+    "black>=25.9.0",
+    "flake8>=7.3.0",
+    "pytest>=8.4.2",
+]
